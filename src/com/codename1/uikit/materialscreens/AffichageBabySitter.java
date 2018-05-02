@@ -20,44 +20,34 @@ package com.codename1.uikit.materialscreens;
 
 import com.allforkids.Entite.Blague;
 import com.allforkids.Entite.EntitySpecialiste;
-import com.allforkids.Service.PediatreSpecialisteService;
 import com.allforkids.Service.ServiceBlague;
-import com.codename1.components.FloatingActionButton;
 import com.codename1.components.ImageViewer;
-import com.codename1.components.MultiButton;
 import com.codename1.components.SpanLabel;
+import com.codename1.io.Log;
 import com.codename1.ui.Button;
-import com.codename1.ui.ComboBox;
-import com.codename1.ui.Component;
+import static com.codename1.ui.CN.addNetworkErrorListener;
+import static com.codename1.ui.CN.updateNetworkThreadCount;
 import com.codename1.ui.ComponentGroup;
 import com.codename1.ui.Container;
 import com.codename1.ui.Dialog;
-import com.codename1.ui.Display;
 import com.codename1.ui.EncodedImage;
-import com.codename1.ui.Font;
 import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
-import com.codename1.ui.Graphics;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
-import com.codename1.ui.TextField;
 import com.codename1.ui.Toolbar;
-import com.codename1.ui.URLImage;
-import com.codename1.ui.events.ActionEvent;
-import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.layouts.GridLayout;
-import com.codename1.ui.plaf.Border;
-import com.codename1.ui.plaf.Style;
 import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
+import com.codename1.uikit.gui.BabySitter;
+import com.pofper.maps.entity.Point;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
 import com.restfb.Parameter;
 import com.restfb.types.FacebookType;
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -66,28 +56,29 @@ import java.util.ArrayList;
  *
  * @author Shai Almog
  */
-public class AffichageBlague extends SideMenuBaseForm {
+public class AffichageBabySitter 
+        extends SideMenuBSForm {
 
     private Image img;
     private ImageViewer imgv;
     private EncodedImage enc;
     public static EntitySpecialiste specDetails = new EntitySpecialiste();
-    private Resources theme = UIManager.initFirstTheme("/theme");
+    public static Resources theme = UIManager.initFirstTheme("/theme_1");
 
-    public AffichageBlague(Resources res) {
+    public AffichageBabySitter() {
 
         super(BoxLayout.y());
 
         System.out.print("now we are in Affiche bvlaque");
         Toolbar tb = getToolbar();
         tb.setTitleCentered(false);
-        Image profilePic = res.getImage("user-picture.jpg");
+        Image icon = theme.getImage("user-picture.jpg");
 
         Button menuButton = new Button("");
         menuButton.setUIID("Title");
         FontImage.setMaterialIcon(menuButton, FontImage.MATERIAL_MENU);
         menuButton.addActionListener(e -> getToolbar().openSideMenu());
-        Label tit = new Label("Blague", "Title");
+        Label tit = new Label("Baby Sitter", "Title");
         Container titleCmp = BoxLayout.encloseY(
                 FlowLayout.encloseIn(menuButton),
                 BorderLayout.centerAbsolute(
@@ -100,50 +91,7 @@ public class AffichageBlague extends SideMenuBaseForm {
 
         tb.setTitleComponent(titleCmp);
 
-        Label Liste = new Label("Blague");
-     
-        Label Liste0 = new Label(" ");
-        Liste.getAllStyles().setFgColor(0xE12336);
-
-        Container listCon = BoxLayout.encloseY(
-                BorderLayout.centerAbsolute(
-                        BoxLayout.encloseY(
-                                Liste
-                        )
-                ),
-                GridLayout.encloseIn(2)
-        );
-        FontImage arrowDown = FontImage.createMaterial(FontImage.MATERIAL_KEYBOARD_ARROW_DOWN, "Label", 3);
-
-      
-
-      
-      ServiceBlague serviceBlague=new ServiceBlague();
-        ArrayList<Blague> liste=serviceBlague.getList();
-      for(Blague t:liste){
-                      Container c = new Container(BoxLayout.y());
-                     
-             Label Titre = new Label(t.getTitre());
-            SpanLabel Desc = new SpanLabel(t.getDescription());
-           Button par=new Button("Partager sur FB");
-               par.addActionListener(e -> {
-
-            String accessToken = "EAAdcc84ixnUBAAaCT4eFCOb3bgIdxFSowprVok9J4nhnmk82ZAjpfor5ZBCNyUYVW77hNt9ONmWl2Be3ldUl1ZCeKg8E4AiynJLfoGOSGZB57TUE0GVZBiDZArJ5gUfpi8Gxqnko9vUUsJUp7ABZADW0yhKmUSvi4R6TCAsRzXtjbTiiBH5YIzP";
-
-            FacebookClient fbClient = new DefaultFacebookClient(accessToken);
-            FacebookType response = fbClient.publish("me/feed", FacebookType.class,
-                    Parameter.with("message",t.getTitre()+" "+t.getDescription())
-            );
-            Dialog.show("Information","Votre blague à été publiée sur facebook","ok",null);
-        });
-            c.addAll(Titre, Desc,par);
-                
-                c.getStyle().setBgColor(0x99CCCC);
-                c.getStyle().setBgTransparency(255);
-                add(ComponentGroup.enclose(c));
-             
-        }
-        setupSideMenu(res);
+        setupSideMenu(theme);
     }
 
     private void addButtonBottom(Image arrowDown, EntitySpecialiste spec, int color, boolean first, int i) {
