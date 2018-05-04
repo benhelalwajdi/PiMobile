@@ -28,7 +28,6 @@ import com.codename1.ui.Label;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.Layout;
 import com.codename1.ui.util.Resources;
-import com.codename1.uikit.gui.BabySitter;
 import com.pofper.maps.entity.Point;
 
 /**
@@ -63,21 +62,15 @@ public abstract class SideMenuBSForm extends Form {
      
         getToolbar().addComponentToSideMenu(sidemenuTop);
         getToolbar().addMaterialCommandToSideMenu("  Profile", FontImage.MATERIAL_MESSAGE,  e -> new AffichageBlague(res).show());
-        getToolbar().addMaterialCommandToSideMenu("  Message", FontImage.MATERIAL_RECEIPT,  e -> new AffichageRecette(res).show());
+        getToolbar().addMaterialCommandToSideMenu("  Message", FontImage.MATERIAL_RECEIPT,  e -> new Conversationsgui());
         getToolbar().addMaterialCommandToSideMenu("  Parameter", FontImage.MATERIAL_ACCESS_TIME,  e -> new AffichageBonplan(res).show());
         getToolbar().addMaterialCommandToSideMenu("  Conseils", FontImage.MATERIAL_CONTACTS,  e -> new AffichageConseil(res).show());
         getToolbar().addMaterialCommandToSideMenu("  Utilisateur", FontImage.MATERIAL_INFO,  e -> new AffichageUser(res).show());
         getToolbar().addMaterialCommandToSideMenu("  Logout", FontImage.MATERIAL_EXIT_TO_APP,  e -> new LoginForm(res).show());
-   
         getToolbar().addMaterialCommandToSideMenu("Profile", FontImage.MATERIAL_HOME, e -> {
             //  Form profilForm = 
 
         });
-        getToolbar().addMaterialCommandToSideMenu("BabySitter", FontImage.MATERIAL_WEB, e -> {
-            Form recommandationListForm = (new BabySitter(new Point(36.872530, 10.316018), 3000, 200, 200))
-                    .getContainer();
-            recommandationListForm.show();
-             });
         
        
         }
