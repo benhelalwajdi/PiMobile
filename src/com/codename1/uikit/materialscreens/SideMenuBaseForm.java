@@ -60,11 +60,12 @@ public abstract class SideMenuBaseForm extends Form {
         sidemenuTop.setUIID("SidemenuTop");
      
         getToolbar().addComponentToSideMenu(sidemenuTop);
-        getToolbar().addMaterialCommandToSideMenu("  Blagues", FontImage.MATERIAL_MESSAGE,  e -> new AffichageBlague(res).show());
-        getToolbar().addMaterialCommandToSideMenu("  Recettes", FontImage.MATERIAL_RECEIPT,  e -> new AffichageRecette(res).show());
+        getToolbar().addMaterialCommandToSideMenu("  BabySitter", FontImage.MATERIAL_MESSAGE,  e -> new AffichageBabySitter(res).show());
+        getToolbar().addMaterialCommandToSideMenu("  conv", FontImage.MATERIAL_RECEIPT,  e -> new Conversationsgui());
         getToolbar().addMaterialCommandToSideMenu("  Bonplans", FontImage.MATERIAL_ACCESS_TIME,  e -> new AffichageBonplan(res).show());
         getToolbar().addMaterialCommandToSideMenu("  Conseils", FontImage.MATERIAL_CONTACTS,  e -> new AffichageConseil(res).show());
         getToolbar().addMaterialCommandToSideMenu("  Utilisateur", FontImage.MATERIAL_INFO,  e -> new AffichageUser(res).show());
+        getToolbar().addMaterialCommandToSideMenu("  listfav", FontImage.MATERIAL_INFO,  e -> new Affichagefav(res).show());
         getToolbar().addMaterialCommandToSideMenu("  Logout", FontImage.MATERIAL_EXIT_TO_APP,  e -> new LoginForm(res).show());
     }
     

@@ -20,10 +20,10 @@ package com.codename1.uikit.materialscreens;
 
 import com.allforkids.Entite.Blague;
 import com.allforkids.Entite.EntitySpecialiste;
+import com.allforkids.Entite.EntityUser;
 import com.allforkids.Service.PediatreSpecialisteService;
+import com.allforkids.Service.ServiceBabys;
 import com.allforkids.Service.ServiceBlague;
-import com.allforkids.Service.ServiceUser;
-import static com.allforkids.Service.ServiceUser.roleuser;
 import com.codename1.components.FloatingActionButton;
 import com.codename1.components.ImageViewer;
 import com.codename1.components.MultiButton;
@@ -55,8 +55,15 @@ import com.codename1.ui.plaf.Border;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
+import com.restfb.DefaultFacebookClient;
+import com.restfb.FacebookClient;
+import com.restfb.Parameter;
+import com.restfb.types.FacebookType;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+
+import static com.allforkids.Service.ServiceUser.userid;
 
 /**
  * Represents a user profile in the app, the first form we open after the
@@ -64,18 +71,21 @@ import java.util.ArrayList;
  *
  * @author Shai Almog
  */
-public class AffichageUser extends SideMenuBaseForm {
+public class Affichagefav extends SideMenuBaseForm {
 
     private Image img;
+    private Form f ;
     private ImageViewer imgv;
     private EncodedImage enc;
     public static EntitySpecialiste specDetails = new EntitySpecialiste();
-    private Resources theme = UIManager.initFirstTheme("/theme");
+    public static Resources theme = UIManager.initFirstTheme("/theme");
+    public static Resources theme2 = UIManager.initFirstTheme("/theme_1");
 
-    public AffichageUser(Resources res) {
+    public Affichagefav(Resources res) {
 
         super(BoxLayout.y());
 
+        System.out.print("now we are in Affiche  Baby Sitter");
         Toolbar tb = getToolbar();
         tb.setTitleCentered(false);
         Image profilePic = res.getImage("user-picture.jpg");
@@ -84,7 +94,7 @@ public class AffichageUser extends SideMenuBaseForm {
         menuButton.setUIID("Title");
         FontImage.setMaterialIcon(menuButton, FontImage.MATERIAL_MENU);
         menuButton.addActionListener(e -> getToolbar().openSideMenu());
-        Label tit = new Label("Utilisateur", "Title");
+        Label tit = new Label(" Baby Sitter", "Title");
         Container titleCmp = BoxLayout.encloseY(
                 FlowLayout.encloseIn(menuButton),
                 BorderLayout.centerAbsolute(
@@ -94,11 +104,11 @@ public class AffichageUser extends SideMenuBaseForm {
                 ),
                 GridLayout.encloseIn(2)
         );
-
+        
         tb.setTitleComponent(titleCmp);
 
-        Label Liste = new Label("Utilisateur");
-
+        Label Liste = new Label("Liste Baby Sitter");
+     
         Label Liste0 = new Label(" ");
         Liste.getAllStyles().setFgColor(0xE12336);
 
@@ -111,19 +121,45 @@ public class AffichageUser extends SideMenuBaseForm {
                 GridLayout.encloseIn(2)
         );
         FontImage arrowDown = FontImage.createMaterial(FontImage.MATERIAL_KEYBOARD_ARROW_DOWN, "Label", 3);
-        Label l5 = new Label("Nom : " + ServiceUser.nomuser);
-        Label l6 = new Label(ServiceUser.nomuser);
-        Label l = new Label("Email : ");
-        Label l2 = new Label(ServiceUser.mailuser);
-        Label l3 = new Label("Role : ");
-        int x = roleuser.indexOf("R");
-        Label l4 = new Label(ServiceUser.roleuser.substring(x, roleuser.length() - 2));
-        addAll(ComponentGroup.enclose(l5, l2, l4));
+
+      
+
+      
+      ServiceBabys ServiceBabys=new ServiceBabys();
+      List<EntityUser> liste= ServiceBabys.getListfav(userid);
+      if(liste==null){
+          Dialog.show("favorier", "rien de fav","bien","annuler");
+      }else{
+      for(EntityUser t:liste){
+                      Container c = new Container(BoxLayout.y());
+                     
+             
+                      Label Email = new Label(t.getEmail());
+                      Label Prenom = new Label(t.getPrenom());
+            SpanLabel Nom = new SpanLabel(t.getNom());
+            
+            c.addAll(Email, Nom,Prenom);
+            
+                c.getStyle().setBgColor(0x99CCCC);
+                c.getStyle().setBgTransparency(255);
+                add(ComponentGroup.enclose(c));
+             
+                Button lead = new Button();
+        lead.setVisible(false);
+        lead.addActionListener((ActionEvent e) -> (new Affichagemapfromfav(res,t).show()));
+        c.add(lead);
+        c.setLeadComponent(lead);
+        
         setupSideMenu(res);
+    }}
+      
     }
 
     private void addButtonBottom(Image arrowDown, EntitySpecialiste spec, int color, boolean first, int i) {
 
+       
+
+   
     }
 
     @Override
@@ -131,4 +167,5 @@ public class AffichageUser extends SideMenuBaseForm {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+   
 }

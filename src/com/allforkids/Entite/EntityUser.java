@@ -12,6 +12,7 @@ import java.util.Date;
  * @author Amine
  */
 public class EntityUser {
+
     private int id;
     private String username;
     private String user_canonical;
@@ -24,11 +25,88 @@ public class EntityUser {
     private String confirmation_token;
     private String password_requested_at;
     private String roles;
+    private Double lat;
+    private Double lng;
+    private String nom;
+    private String phone;
+    private String prenom;
+    private String adresse;
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getPrenom() {
+        return prenom;
+    }
+
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
+    }
+
+    public String getAdresse() {
+        return adresse;
+    }
+
+    public void setAdresse(String adresse) {
+        this.adresse = adresse;
+    }
+
+    public Double getLat() {
+        return lat;
+    }
+
+    public void setLat(Double lat) {
+        this.lat = lat;
+    }
+
+    public Double getLng() {
+        return lng;
+    }
+
+    public void setLng(Double lng) {
+        this.lng = lng;
+    }
+
+    public String getImage_name() {
+        return image_name;
+    }
+
+    public void setImage_name(String image_name) {
+        this.image_name = image_name;
+    }
+    private String image_name;
 
     public EntityUser() {
     }
 
-    public EntityUser(int id, String username, String user_canonical, String email, String email_canonical, int enabled, String salt, String password, Date last_login, String confirmation_token, String password_requested_at, String roles) {
+    public EntityUser(Double lat,Double lng,String img, int id, String username, String nom, String prenom, String email, String phone) {
+        this.id = id;
+        this.lat= lat ;
+        this.lng = lng;
+        this.image_name= img;
+        this.username = username;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.phone= phone;
+      
+
+    }
+    public EntityUser( int id, String username, String user_canonical,
+            String email, String email_canonical, int enabled, String salt, 
+                    String password, Date last_login, String confirmation_token, String password_requested_at, String roles) {
         this.id = id;
         this.username = username;
         this.user_canonical = user_canonical;
@@ -41,6 +119,7 @@ public class EntityUser {
         this.confirmation_token = confirmation_token;
         this.password_requested_at = password_requested_at;
         this.roles = roles;
+
     }
 
     public int getId() {
@@ -138,8 +217,5 @@ public class EntityUser {
     public void setRoles(String roles) {
         this.roles = roles;
     }
-    
-    
-    
-    
+
 }

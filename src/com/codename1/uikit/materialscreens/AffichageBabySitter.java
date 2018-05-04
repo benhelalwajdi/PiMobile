@@ -20,35 +20,48 @@ package com.codename1.uikit.materialscreens;
 
 import com.allforkids.Entite.Blague;
 import com.allforkids.Entite.EntitySpecialiste;
+import com.allforkids.Entite.EntityUser;
+import com.allforkids.Service.PediatreSpecialisteService;
+import com.allforkids.Service.ServiceBabys;
 import com.allforkids.Service.ServiceBlague;
+import com.codename1.components.FloatingActionButton;
 import com.codename1.components.ImageViewer;
+import com.codename1.components.MultiButton;
 import com.codename1.components.SpanLabel;
-import com.codename1.io.Log;
 import com.codename1.ui.Button;
-import static com.codename1.ui.CN.addNetworkErrorListener;
-import static com.codename1.ui.CN.updateNetworkThreadCount;
+import com.codename1.ui.ComboBox;
+import com.codename1.ui.Component;
 import com.codename1.ui.ComponentGroup;
 import com.codename1.ui.Container;
 import com.codename1.ui.Dialog;
+import com.codename1.ui.Display;
 import com.codename1.ui.EncodedImage;
+import com.codename1.ui.Font;
 import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
+import com.codename1.ui.Graphics;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
+import com.codename1.ui.TextField;
 import com.codename1.ui.Toolbar;
+import com.codename1.ui.URLImage;
+import com.codename1.ui.events.ActionEvent;
+import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.layouts.GridLayout;
+import com.codename1.ui.plaf.Border;
+import com.codename1.ui.plaf.Style;
 import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
-import com.codename1.uikit.gui.BabySitter;
-import com.pofper.maps.entity.Point;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
 import com.restfb.Parameter;
 import com.restfb.types.FacebookType;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents a user profile in the app, the first form we open after the
@@ -56,29 +69,30 @@ import java.util.ArrayList;
  *
  * @author Shai Almog
  */
-public class AffichageBabySitter 
-        extends SideMenuBSForm {
+public class AffichageBabySitter extends SideMenuBaseForm {
 
     private Image img;
+    private Form f ;
     private ImageViewer imgv;
     private EncodedImage enc;
     public static EntitySpecialiste specDetails = new EntitySpecialiste();
-    public static Resources theme = UIManager.initFirstTheme("/theme_1");
+    public static Resources theme = UIManager.initFirstTheme("/theme");
+    public static Resources theme2 = UIManager.initFirstTheme("/theme_1");
 
-    public AffichageBabySitter() {
+    public AffichageBabySitter(Resources res) {
 
         super(BoxLayout.y());
 
-        System.out.print("now we are in Affiche bvlaque");
+        System.out.print("now we are in Affiche  Baby Sitter");
         Toolbar tb = getToolbar();
         tb.setTitleCentered(false);
-        Image icon = theme.getImage("user-picture.jpg");
+        Image profilePic = res.getImage("user-picture.jpg");
 
         Button menuButton = new Button("");
         menuButton.setUIID("Title");
         FontImage.setMaterialIcon(menuButton, FontImage.MATERIAL_MENU);
         menuButton.addActionListener(e -> getToolbar().openSideMenu());
-        Label tit = new Label("Baby Sitter", "Title");
+        Label tit = new Label(" Baby Sitter", "Title");
         Container titleCmp = BoxLayout.encloseY(
                 FlowLayout.encloseIn(menuButton),
                 BorderLayout.centerAbsolute(
@@ -88,10 +102,51 @@ public class AffichageBabySitter
                 ),
                 GridLayout.encloseIn(2)
         );
-
+        
         tb.setTitleComponent(titleCmp);
 
-        setupSideMenu(theme);
+        Label Liste = new Label("Liste Baby Sitter");
+     
+        Label Liste0 = new Label(" ");
+        Liste.getAllStyles().setFgColor(0xE12336);
+
+        Container listCon = BoxLayout.encloseY(
+                BorderLayout.centerAbsolute(
+                        BoxLayout.encloseY(
+                                Liste
+                        )
+                ),
+                GridLayout.encloseIn(2)
+        );
+        FontImage arrowDown = FontImage.createMaterial(FontImage.MATERIAL_KEYBOARD_ARROW_DOWN, "Label", 3);
+
+      
+
+      
+      ServiceBabys ServiceBabys=new ServiceBabys();
+       List<EntityUser> liste= ServiceBabys.getList();
+      for(EntityUser t:liste){
+                      Container c = new Container(BoxLayout.y());
+                     
+             
+                      Label Email = new Label(t.getEmail());
+                      Label Prenom = new Label(t.getPrenom());
+            SpanLabel Nom = new SpanLabel(t.getNom());
+            
+            c.addAll(Email, Nom,Prenom);
+            
+                c.getStyle().setBgColor(0x99CCCC);
+                c.getStyle().setBgTransparency(255);
+                add(ComponentGroup.enclose(c));
+             
+                Button lead = new Button();
+        lead.setVisible(false);
+        lead.addActionListener((ActionEvent e) -> (new Affichagemap(res,t).show()));
+        c.add(lead);
+        c.setLeadComponent(lead);
+        
+        setupSideMenu(res);
+    }
     }
 
     private void addButtonBottom(Image arrowDown, EntitySpecialiste spec, int color, boolean first, int i) {
